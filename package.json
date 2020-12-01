@@ -1,0 +1,18 @@
+{
+  "name": "fundamental-express",
+  "version": "1.0.0",
+  "description": "Belajar express",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "dumbways",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
