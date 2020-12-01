@@ -14,6 +14,9 @@ module.exports = {
       description: {
         type: Sequelize.STRING, //varchar default length 255
       },
+      content: {
+        type: Sequelize.STRING, //varchar default length 255
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE, // datetime
