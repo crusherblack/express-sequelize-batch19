@@ -20,8 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
+      paranoid: true, //Paranoid model to active soft delete
       modelName: "Post", //nama table didatabase
     }
   );
+
   return Post;
 };

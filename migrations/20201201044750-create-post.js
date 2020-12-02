@@ -25,6 +25,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE, // datetime
       },
+      deletedAt: {
+        allowNull: false,
+        type: Sequelize.DATE, // datetime
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
