@@ -128,7 +128,7 @@ exports.addPost = async (req, res) => {
   try {
     //body merupakan data yang kita peroleh dari client
     //body ada pada request
-    //files = array of object
+    //files = array of object / hanya didapat jika melewati upload middleware
     const { body, files } = req;
 
     //how to get file yang diupload
