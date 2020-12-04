@@ -2,6 +2,7 @@
 const { Post } = require("../../models");
 const responseSuccess = "Response Success";
 const resourceNotFound = "Resource Not Found";
+const Joi = require("joi");
 
 //longWays
 // exports.getPosts = async (req, res) => {
@@ -34,6 +35,8 @@ const resourceNotFound = "Resource Not Found";
 //shortHand
 //Mendapatkan seluruh resource dari table post
 exports.getPosts = async (req, res) => {
+  console.log("request dari middleware", req.user.id);
+
   try {
     //tampung data yang diresolve dari promise findAll (model Post)
     const posts = await Post.findAll({
@@ -125,10 +128,35 @@ exports.addPost = async (req, res) => {
   try {
     //body merupakan data yang kita peroleh dari client
     //body ada pada request
-    const { body } = req;
+    //files = array of object
+    const { body, files } = req;
+
+    const thumbnailName = files.thumbnail[0].filename;
+
+    //bikin schema dan tentunkan rule dari validasi kita
+    const schema = Joi.object({
+      title: Joi.string().min(5).required(),
+      description: Joi.string().min(10).required(),
+      content: Joi.string(),
+    });
+
+    //destruct error result dari validation
+    const { error } = schema.validate(body, {
+      abortEarly: false,
+    });
+
+    //jika ada error stop disini dan kirim response error
+    if (error) {
+      return res.status(400).send({
+        status: "Validation Error",
+        error: {
+          message: error.details.map((error) => error.message),
+        },
+      });
+    }
 
     //method create menerima 1 parameter yaitu data yang mau diinsert
-    const post = await Post.create(body);
+    const post = await Post.create({ ...body, thumbnail: thumbnailName });
 
     //send jika oke
     res.send({
