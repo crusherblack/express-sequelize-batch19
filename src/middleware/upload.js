@@ -10,21 +10,32 @@ exports.uploadImage = (file1, file2) => {
     },
   });
 
-  const imageFilter = function (req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-      req.fileValidationError = {
-        message: "Only image files are allowed!",
-      };
-      return cb(new Error("Only image files are allowed!"), false);
+  const fileFilter = function (req, file, cb) {
+    if (file.fieldname === file1) {
+      if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+        req.fileValidationError = {
+          message: "Only image files are allowed!",
+        };
+        return cb(new Error("Only image files are allowed!"), false);
+      }
+    }
+
+    if (file.fieldname === file2) {
+      if (!file.originalname.match(/\.(mp4)$/)) {
+        req.fileValidationError = {
+          message: "Only Video files are allowed!",
+        };
+        return cb(new Error("Only Video files are allowed!"), false);
+      }
     }
     cb(null, true);
   };
 
-  const maxSize = 10 * 1000 * 1000; //10MB
+  const maxSize = 100 * 1000 * 1000; //10MB
 
   const upload = multer({
     storage,
-    fileFilter: imageFilter,
+    fileFilter,
     limits: {
       fileSize: maxSize,
     },
