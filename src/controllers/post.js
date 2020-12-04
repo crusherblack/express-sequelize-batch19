@@ -131,7 +131,11 @@ exports.addPost = async (req, res) => {
     //files = array of object
     const { body, files } = req;
 
+    //how to get file yang diupload
     const thumbnailName = files.thumbnail[0].filename;
+    const videoFileName = files.videoFile[0].filename;
+
+    console.log({ videoFileName, thumbnailName });
 
     //bikin schema dan tentunkan rule dari validasi kita
     const schema = Joi.object({

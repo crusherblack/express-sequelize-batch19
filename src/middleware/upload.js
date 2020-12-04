@@ -1,15 +1,19 @@
 const multer = require("multer");
 
 exports.uploadFile = (file1, file2) => {
+  //initialisasi multer diskstorage
+  //menentukan destionation file diupload
+  //menentukan nama file (rename agar tidak ada nama file ganda)
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, "uploads");
+      cb(null, "uploads"); //lokasih penyimpan file
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + "-" + file.originalname);
+      cb(null, Date.now() + "-" + file.originalname); //rename nama file by date now + nama original
     },
   });
 
+  //function untuk filter file berdasarkan type
   const fileFilter = function (req, file, cb) {
     if (file.fieldname === file1) {
       if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
@@ -31,8 +35,9 @@ exports.uploadFile = (file1, file2) => {
     cb(null, true);
   };
 
-  const maxSize = 100 * 1000 * 1000; //10MB
+  const maxSize = 100 * 1000 * 1000; //Maximum file size i MB
 
+  //eksekusi upload multer dan tentukan disk storage, validation dan maxfile size
   const upload = multer({
     storage,
     fileFilter,
@@ -48,19 +53,22 @@ exports.uploadFile = (file1, file2) => {
       name: file2,
       maxCount: 1,
     },
-  ]);
+  ]); //fields digunakan karena file yang diupload lebih dari 1 fields
 
   //middleware handler
   return (req, res, next) => {
     upload(req, res, function (err) {
+      //munculkan error jika validasi gagal
       if (req.fileValidationError)
         return res.status(400).send(req.fileValidationError);
 
+      //munculkan error jika file tidak disediakan
       if (!req.files && !err)
         return res.status(400).send({
-          message: "Please select an images to upload",
+          message: "Please select files to upload",
         });
 
+      //munculkan error jika melebihi max size
       if (err) {
         if (err.code === "LIMIT_FILE_SIZE") {
           return res.status(400).send({
@@ -70,6 +78,8 @@ exports.uploadFile = (file1, file2) => {
         return res.status(400).send(err);
       }
 
+      //jika oke dan aman lanjut ke controller
+      //akses nnti pake req.files
       return next();
     });
   };

@@ -40,6 +40,8 @@ router.delete("/todo/:id", deleteTodo);
 //posts
 router.get("/posts", authentication, getPosts); //get all resource
 router.get("/post/:id", getSinglePostById); //get one resource
+//pastikan name parameter didalam uploadFile itu sama dengan yang kalian kirim
+//dari postman atau dari form-data (name field pada form / state)
 router.post("/post", uploadFile("thumbnail", "videoFile"), addPost); //add one resource
 router.patch("/post/:id", updatePost); //update resource by id
 router.delete("/post/:id", deletePost); //delete resource by id (Soft Delete || Using Paranoid Model)
