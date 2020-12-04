@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { auth: fakeAuth } = require("../middleware/fakeMidlleware");
 const { auth: authentication } = require("../middleware/auth");
-const { uploadImage } = require("../middleware/upload");
+const { uploadFile } = require("../middleware/upload");
 
 const {
   getTodos,
@@ -40,7 +40,7 @@ router.delete("/todo/:id", deleteTodo);
 //posts
 router.get("/posts", authentication, getPosts); //get all resource
 router.get("/post/:id", getSinglePostById); //get one resource
-router.post("/post", uploadImage("thumbnail", "videoFile"), addPost); //add one resource
+router.post("/post", uploadFile("thumbnail", "videoFile"), addPost); //add one resource
 router.patch("/post/:id", updatePost); //update resource by id
 router.delete("/post/:id", deletePost); //delete resource by id (Soft Delete || Using Paranoid Model)
 router.post("/post/:id", restorePost); //restore resource by id

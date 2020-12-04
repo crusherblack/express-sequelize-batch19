@@ -1,6 +1,6 @@
 const multer = require("multer");
 
-exports.uploadImage = (file1, file2) => {
+exports.uploadFile = (file1, file2) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, "uploads");
